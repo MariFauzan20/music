@@ -4,11 +4,6 @@ import Music from "./Components/Music";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  const CLIENT_ID = "6c0eb7856fac4915982fc03a7f65af28";
-  const REDIRECT_URI = "http://localhost:3000/";
-  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-  const RESPONSE_TYPE = "token";
-
   const [token, setToken] = useState("");
   const [searchKey, setSearchKey] = useState("");
   const [tracks, setTracks] = useState([]);
@@ -60,7 +55,7 @@ function App() {
             {!token ? (
               <a
                 className="btn btn-primary btn-sm"
-                href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+                href={`${process.env.REACT_APP_AUTH_ENDPOINT}?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=${process.env.REACT_APP_RESPONSE_TYPE}`}
               >
                 Login to Spotify
               </a>
