@@ -1,49 +1,63 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Music from "./Components/Music";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import SeacrhBar from "./Components/SearchBar";
+import FormPlaylist from "./Components/FormPlaylist";
 
 function App() {
-  const [token, setToken] = useState("");
-  const [searchKey, setSearchKey] = useState("");
+  const [accessToken, setAccessToken] = useState("");
   const [tracks, setTracks] = useState([]);
+  const [selectedTracks, setSelectedTracks] = useState([]);
+  const [isAuthorize, setIsAuthorize] = useState(false);
+  const [isSearch, setIsSearch] = useState(false);
 
+  // Get Access Token
   useEffect(() => {
-    const hash = window.location.hash;
-    let token = window.localStorage.getItem("token");
-
-    if (!token && hash) {
-      token = hash
-        .substring(1)
-        .split("&")
-        .find((elem) => elem.startsWith("access_token"))
-        .split("=")[1];
-
-      window.location.hash = "";
-      window.localStorage.setItem("token", token);
-    }
-    setToken(token);
+    const token = new URLSearchParams(window.location.hash).get(
+      "#access_token"
+    );
+    setAccessToken(token);
+    setIsAuthorize(token !== null);
   }, []);
 
-  const logout = () => {
-    setToken("");
-    window.localStorage.removeItem("token");
+  useEffect(() => {
+    if (!isSearch) {
+      const dataSelectedTracks = filterSelectedTracks();
+      setTracks(dataSelectedTracks);
+    }
+  }, [selectedTracks]);
+
+  // Get Link Authorize
+  const getLinkAuthorize = () => {
+    const state = Date.now().toString();
+
+    return `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&response_type=token&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&state=${state}&scope=playlist-modify-private`;
   };
 
-  const searchTracks = async (e) => {
-    e.preventDefault();
+  // Success Search
+  const successSearch = (tracks) => {
+    setIsSearch(true);
+    const dataSelectedTracks = filterSelectedTracks();
+    const searchDistinctTracks = tracks.filter(
+      (track) => !selectedTracks.includes(track.uri)
+    );
 
-    const { data } = await axios.get("https://api.spotify.com/v1/search", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      params: {
-        q: searchKey,
-        type: "track",
-      },
-    });
+    setTracks([...dataSelectedTracks, ...searchDistinctTracks]);
+  };
 
-    setTracks(data.tracks.items);
+  // Filter Track based on Selected
+  const filterSelectedTracks = () => {
+    return tracks.filter((track) => selectedTracks.includes(track.uri));
+  };
+
+  const clickHandleSelect = (track) => {
+    const { uri } = track;
+
+    if (selectedTracks.includes(uri)) {
+      setSelectedTracks(selectedTracks.filter((data) => data !== uri));
+    } else {
+      setSelectedTracks([...selectedTracks, uri]);
+    }
   };
 
   return (
@@ -52,35 +66,20 @@ function App() {
         <div className="col d-flex justify-content-between">
           <h1>Spotify</h1>
           <div className="d-flex flex-column align-items-end">
-            {!token ? (
-              <a
-                className="btn btn-primary btn-sm"
-                href={`${process.env.REACT_APP_AUTH_ENDPOINT}?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=${process.env.REACT_APP_RESPONSE_TYPE}`}
-              >
+            {!isAuthorize && (
+              <a className="btn btn-primary btn-sm" href={getLinkAuthorize()}>
                 Login to Spotify
               </a>
-            ) : (
-              <button
-                type="button"
-                className="btn btn-success btn-sm"
-                onClick={logout}
-              >
-                Logout
-              </button>
             )}
-            {token ? (
-              <form className="mt-5" onSubmit={searchTracks}>
-                <input
-                  className="me-1"
-                  type="text"
-                  onChange={(e) => setSearchKey(e.target.value)}
+
+            {isAuthorize && (
+              <div>
+                <FormPlaylist />
+                <SeacrhBar
+                  token={accessToken}
+                  successSearch={(tracks) => successSearch(tracks)}
                 />
-                <button className="btn btn-primary btn-sm" type={"submit"}>
-                  Search
-                </button>
-              </form>
-            ) : (
-              <h2 className="">Please Login First</h2>
+              </div>
             )}
           </div>
         </div>
@@ -88,14 +87,30 @@ function App() {
       <div className="row">
         {tracks.map((track) => (
           <Music
-            key={track.id}
+            key={track.uri}
             urlImg={track.album.images[0].url}
             title={track.name}
             artist={track.album.artists[0].name}
             album={track.album.name}
+            clickHandleSelect={() => clickHandleSelect(track)}
           />
         ))}
       </div>
+      {/* <div className="row">
+        <div className="col">
+          <form action="">
+            <input type="text" name="title" id="title" placeholder="Title" />
+            <textarea
+              name="description"
+              id="description"
+              cols="30"
+              rows="10"
+              placeholder="Description"
+            />
+            <button className="btn btn-success">Submit</button>
+          </form>
+        </div>
+      </div> */}
     </div>
   );
 }
