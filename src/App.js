@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import Music from "./Components/Music";
+import Music from "./components/Music";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import SeacrhBar from "./Components/SearchBar";
-import FormPlaylist from "./Components/FormPlaylist";
+import SeacrhBar from "./components/SearchBar";
+import FormPlaylist from "./components/FormPlaylist";
+import { getUserProfile } from "./handler/api";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
@@ -10,14 +11,30 @@ function App() {
   const [selectedTracks, setSelectedTracks] = useState([]);
   const [isAuthorize, setIsAuthorize] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
+  const [user, setUser] = useState({});
 
   // Get Access Token
   useEffect(() => {
     const token = new URLSearchParams(window.location.hash).get(
       "#access_token"
     );
-    setAccessToken(token);
-    setIsAuthorize(token !== null);
+
+    if (token !== null) {
+      setAccessToken(token);
+      setIsAuthorize(token !== null);
+
+      const setUserProfile = async () => {
+        try {
+          const response = await getUserProfile(token);
+
+          setUser(response);
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+
+      setUserProfile();
+    }
   }, []);
 
   useEffect(() => {
@@ -65,7 +82,7 @@ function App() {
       <div className="row">
         <div className="col d-flex justify-content-between">
           <h1>Spotify</h1>
-          <div className="d-flex flex-column align-items-end">
+          <div className="d-flex align-items-start">
             {!isAuthorize && (
               <a className="btn btn-primary btn-sm" href={getLinkAuthorize()}>
                 Login to Spotify
@@ -73,16 +90,22 @@ function App() {
             )}
 
             {isAuthorize && (
-              <div>
-                <FormPlaylist />
-                <SeacrhBar
-                  token={accessToken}
-                  successSearch={(tracks) => successSearch(tracks)}
-                />
-              </div>
+              <SeacrhBar
+                token={accessToken}
+                successSearch={(tracks) => successSearch(tracks)}
+              />
             )}
           </div>
         </div>
+        {isAuthorize && (
+          <div className="col col-2">
+            <FormPlaylist
+              accessToken={accessToken}
+              userId={user.id}
+              selectedTracks={selectedTracks}
+            />
+          </div>
+        )}
       </div>
       <div className="row">
         {tracks.map((track) => (
@@ -96,21 +119,6 @@ function App() {
           />
         ))}
       </div>
-      {/* <div className="row">
-        <div className="col">
-          <form action="">
-            <input type="text" name="title" id="title" placeholder="Title" />
-            <textarea
-              name="description"
-              id="description"
-              cols="30"
-              rows="10"
-              placeholder="Description"
-            />
-            <button className="btn btn-success">Submit</button>
-          </form>
-        </div>
-      </div> */}
     </div>
   );
 }

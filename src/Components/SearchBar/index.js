@@ -38,7 +38,7 @@ export default class SeacrhBar extends Component {
 
   render() {
     return (
-      <form className="mt-5" onSubmit={(e) => this.handleButtonSearch(e)}>
+      <form className="mt-4" onSubmit={(e) => this.handleButtonSearch(e)}>
         <input
           className="me-1"
           type="text"
