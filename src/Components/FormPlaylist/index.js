@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { addTracksToPlaylist, createPlaylist } from "../../handler/api";
+import { useSelector } from "react-redux";
 
-export default function FormPlaylist({ accessToken, userId, selectedTracks }) {
+export default function FormPlaylist({ selectedTracks }) {
+  const accessToken = useSelector((state) => state.auth.accessToken);
+  const userId = useSelector((state) => state.auth.user.id);
   const [form, setForm] = useState({
     title: "",
     description: "",

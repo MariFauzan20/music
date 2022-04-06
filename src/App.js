@@ -4,14 +4,16 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import SeacrhBar from "./components/SearchBar";
 import FormPlaylist from "./components/FormPlaylist";
 import { getUserProfile } from "./handler/api";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../slice/authSlice";
 
 function App() {
-  const [accessToken, setAccessToken] = useState("");
   const [tracks, setTracks] = useState([]);
   const [selectedTracks, setSelectedTracks] = useState([]);
-  const [isAuthorize, setIsAuthorize] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const [user, setUser] = useState({});
+  const isAuthorize = useSelector((state) => state.auth.isAuthorize);
+  const dispatch = useDispatch();
 
   // Get Access Token
   useEffect(() => {
@@ -20,14 +22,16 @@ function App() {
     );
 
     if (token !== null) {
-      setAccessToken(token);
-      setIsAuthorize(token !== null);
-
       const setUserProfile = async () => {
         try {
           const response = await getUserProfile(token);
 
-          setUser(response);
+          dispatch(
+            login({
+              accessToken: token,
+              user: response,
+            })
+          );
         } catch (error) {
           console.error(error.message);
         }
@@ -90,20 +94,13 @@ function App() {
             )}
 
             {isAuthorize && (
-              <SeacrhBar
-                token={accessToken}
-                successSearch={(tracks) => successSearch(tracks)}
-              />
+              <SeacrhBar successSearch={(tracks) => successSearch(tracks)} />
             )}
           </div>
         </div>
         {isAuthorize && (
           <div className="col col-2">
-            <FormPlaylist
-              accessToken={accessToken}
-              userId={user.id}
-              selectedTracks={selectedTracks}
-            />
+            <FormPlaylist selectedTracks={selectedTracks} />
           </div>
         )}
       </div>

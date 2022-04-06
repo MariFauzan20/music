@@ -17,12 +17,14 @@ export default class SeacrhBar extends Component {
     e.preventDefault();
 
     const keyword = this.state.keyword;
+    const accessToken = (state) => ({ accessToken: state.auth.accessToken });
+
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_SPOTIFY_BASE_URL}/search`,
         {
           headers: {
-            Authorization: `Bearer ${this.props.token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
           params: {
             q: keyword,
