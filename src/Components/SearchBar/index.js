@@ -1,30 +1,24 @@
 import axios from "axios";
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
-export default class SeacrhBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      keyword: "",
-    };
-  }
+export default function SearchBar({ successSearch }) {
+  const [keyword, setKeyword] = useState("");
+  const token = useSelector((state) => state.auth.accessToken);
 
-  handleInputKeyword(e) {
-    this.setState({ keyword: e.target.value });
-  }
+  const handleInputKeyword = (e) => {
+    setKeyword(e.target.value);
+  };
 
-  async handleButtonSearch(e) {
+  const handleButtonSearch = async (e) => {
     e.preventDefault();
-
-    const keyword = this.state.keyword;
-    const accessToken = (state) => ({ accessToken: state.auth.accessToken });
 
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_SPOTIFY_BASE_URL}/search`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
           params: {
             q: keyword,
@@ -32,24 +26,22 @@ export default class SeacrhBar extends Component {
           },
         }
       );
-      this.props.successSearch(response.data.tracks.items);
+      successSearch(response.data.tracks.items);
     } catch (error) {
       console.error({ error: error.message });
     }
-  }
+  };
 
-  render() {
-    return (
-      <form className="mt-4" onSubmit={(e) => this.handleButtonSearch(e)}>
-        <input
-          className="me-1"
-          type="text"
-          onChange={(e) => this.handleInputKeyword(e)}
-        />
-        <button className="btn btn-primary btn-sm" type={"submit"}>
-          Search
-        </button>
-      </form>
-    );
-  }
+  return (
+    <form className="mt-4" onSubmit={(e) => handleButtonSearch(e)}>
+      <input
+        className="me-1"
+        type="text"
+        onChange={(e) => handleInputKeyword(e)}
+      />
+      <button className="btn btn-primary btn-sm" type={"submit"}>
+        Search
+      </button>
+    </form>
+  );
 }

@@ -5,13 +5,12 @@ import SeacrhBar from "./components/SearchBar";
 import FormPlaylist from "./components/FormPlaylist";
 import { getUserProfile } from "./handler/api";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../slice/authSlice";
+import { login } from "./features/authSlice";
 
 function App() {
   const [tracks, setTracks] = useState([]);
   const [selectedTracks, setSelectedTracks] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
-  const [user, setUser] = useState({});
   const isAuthorize = useSelector((state) => state.auth.isAuthorize);
   const dispatch = useDispatch();
 
@@ -84,37 +83,44 @@ function App() {
   return (
     <div className="container my-5">
       <div className="row">
-        <div className="col d-flex justify-content-between">
-          <h1>Spotify</h1>
-          <div className="d-flex align-items-start">
-            {!isAuthorize && (
-              <a className="btn btn-primary btn-sm" href={getLinkAuthorize()}>
-                Login to Spotify
-              </a>
-            )}
+        <div className="col col-9">
+          <div className="row">
+            <div className="col d-flex justify-content-between">
+              <h1>Spotify</h1>
+              <div className="d-flex align-items-start">
+                {!isAuthorize && (
+                  <a
+                    className="btn btn-primary btn-sm"
+                    href={getLinkAuthorize()}
+                  >
+                    Login to Spotify
+                  </a>
+                )}
 
-            {isAuthorize && (
-              <SeacrhBar successSearch={(tracks) => successSearch(tracks)} />
-            )}
+                {isAuthorize && (
+                  <SeacrhBar
+                    successSearch={(tracks) => successSearch(tracks)}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            {tracks.map((track) => (
+              <Music
+                key={track.uri}
+                urlImg={track.album.images[0].url}
+                title={track.name}
+                artist={track.album.artists[0].name}
+                album={track.album.name}
+                clickHandleSelect={() => clickHandleSelect(track)}
+              />
+            ))}
           </div>
         </div>
-        {isAuthorize && (
-          <div className="col col-2">
-            <FormPlaylist selectedTracks={selectedTracks} />
-          </div>
-        )}
-      </div>
-      <div className="row">
-        {tracks.map((track) => (
-          <Music
-            key={track.uri}
-            urlImg={track.album.images[0].url}
-            title={track.name}
-            artist={track.album.artists[0].name}
-            album={track.album.name}
-            clickHandleSelect={() => clickHandleSelect(track)}
-          />
-        ))}
+        <div className="col">
+          {isAuthorize && <FormPlaylist selectedTracks={selectedTracks} />}
+        </div>
       </div>
     </div>
   );
