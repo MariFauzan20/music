@@ -33,9 +33,9 @@ export default function SearchBar({ successSearch }) {
   };
 
   return (
-    <form className="mt-4" onSubmit={(e) => handleButtonSearch(e)}>
+    <form onSubmit={(e) => handleButtonSearch(e)}>
       <input
-        className="me-1"
+        className="me-2"
         type="text"
         onChange={(e) => handleInputKeyword(e)}
       />

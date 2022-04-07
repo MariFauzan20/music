@@ -1,5 +1,11 @@
 import axios from "axios";
 
+export const getLinkAuthorize = () => {
+  const state = Date.now().toString();
+
+  return `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&response_type=token&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&state=${state}&scope=playlist-modify-private`;
+};
+
 export const getUserProfile = async (accessToken) => {
   const requestOptions = {
     headers: {
