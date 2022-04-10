@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import propTypes from "prop-types";
 
 export default function Music({
   id,
@@ -32,3 +33,12 @@ export default function Music({
     </div>
   );
 }
+
+Music.propTypes = {
+  id: propTypes.string,
+  urlImg: propTypes.string,
+  title: propTypes.string,
+  artist: propTypes.string,
+  album: propTypes.string,
+  clickHandleSelect: propTypes.func,
+};

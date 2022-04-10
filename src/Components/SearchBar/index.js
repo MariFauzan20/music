@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import propTypes from "prop-types";
 
 export default function SearchBar({ successSearch }) {
   const [keyword, setKeyword] = useState("");
@@ -45,3 +46,7 @@ export default function SearchBar({ successSearch }) {
     </form>
   );
 }
+
+SearchBar.propTypes = {
+  successSearch: propTypes.array,
+};

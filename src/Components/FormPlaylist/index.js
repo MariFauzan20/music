@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { addTracksToPlaylist, createPlaylist } from "../../handler/api";
 import { useSelector } from "react-redux";
+import propTypes from "prop-types";
 
 export default function FormPlaylist({ selectedTracks }) {
   const accessToken = useSelector((state) => state.auth.accessToken);
@@ -70,3 +71,7 @@ export default function FormPlaylist({ selectedTracks }) {
     </>
   );
 }
+
+FormPlaylist.propTypes = {
+  selectedTracks: propTypes.array,
+};
