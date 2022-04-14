@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { getLinkAuthorize } from "../handler/api";
 import { getUserProfile } from "../handler/api";
 import { login } from "../features/authSlice";
-import { useDispatch } from "react-redux";
-// import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 export default function Login() {
   const dispatch = useDispatch();
-  //   const isAuthorize = useSelector((state) => state.auth.isAuthorize);
+  const isAuthorize = useSelector((state) => state.auth.isAuthorize);
 
   // Get Access Token
   useEffect(() => {
@@ -19,13 +19,17 @@ export default function Login() {
       const setUserProfile = async () => {
         try {
           const response = await getUserProfile(token);
+          const data = JSON.stringify(response);
 
           dispatch(
             login({
               accessToken: token,
-              user: response,
+              user: data,
             })
           );
+          sessionStorage.setItem("user", data);
+          sessionStorage.setItem("token", token);
+          window.location.hash = "";
         } catch (error) {
           console.error(error.message);
         }
@@ -40,7 +44,7 @@ export default function Login() {
       <a className="btn btn-primary btn-sm" href={getLinkAuthorize()}>
         Login to Spotify
       </a>
-      {/* {isAuthorize && <Navigate to="/" />} */}
+      {isAuthorize && <Navigate to="/home" />}
     </>
   );
 }

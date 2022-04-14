@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Music from "../components/Music";
-import SearchBar from "../components/SearchBar";
-import { selected } from "../features/selectedTrack";
+import Music from "../../components/Music";
+import SearchBar from "../../components/SearchBar";
+import { selected } from "../../features/selectedTrack";
+import Sidebar from "../../parts/Sidebar";
+import { Navigate } from "react-router-dom";
 
 export default function Home() {
   const [tracks, setTracks] = useState([]);
@@ -54,29 +56,44 @@ export default function Home() {
   };
 
   return (
-    <div className="container my-5">
-      <div className="row">
-        <div className="col d-flex justify-content-between">
-          <h1>Spotify</h1>
-          <div className="d-flex align-items-start">
-            {isAuthorize && (
-              <SearchBar successSearch={(tracks) => successSearch(tracks)} />
-            )}
+    <>
+      {!isAuthorize && <Navigate to={"/"} />}
+      <div className="d-flex bg-bg-secondary">
+        <Sidebar />
+        <div className="container m-3">
+          <div className="row mb-4">
+            <div className="col d-flex justify-content-between">
+              <div>
+                <h4 className="fw-bold" style={{ color: "#FF6E4D" }}>
+                  Spotify
+                </h4>
+                <p className="fs-6 text-secondary">
+                  Discover a new music by typing in search
+                </p>
+              </div>
+              <div className="d-flex align-items-start">
+                {isAuthorize && (
+                  <SearchBar
+                    successSearch={(tracks) => successSearch(tracks)}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            {tracks.map((track) => (
+              <Music
+                key={track.uri}
+                urlImg={track.album.images[0].url}
+                title={track.name}
+                artist={track.album.artists[0].name}
+                album={track.album.name}
+                clickHandleSelect={() => clickHandleSelect(track)}
+              />
+            ))}
           </div>
         </div>
       </div>
-      <div className="row">
-        {tracks.map((track) => (
-          <Music
-            key={track.uri}
-            urlImg={track.album.images[0].url}
-            title={track.name}
-            artist={track.album.artists[0].name}
-            album={track.album.name}
-            clickHandleSelect={() => clickHandleSelect(track)}
-          />
-        ))}
-      </div>
-    </div>
+    </>
   );
 }

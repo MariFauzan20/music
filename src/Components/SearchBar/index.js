@@ -48,5 +48,5 @@ export default function SearchBar({ successSearch }) {
 }
 
 SearchBar.propTypes = {
-  successSearch: propTypes.array,
+  successSearch: propTypes.func,
 };
