@@ -34,12 +34,17 @@ export default function SearchBar({ successSearch }) {
   };
 
   return (
-    <form onSubmit={(e) => handleButtonSearch(e)}>
-      <input
-        className="me-2"
-        type="text"
-        onChange={(e) => handleInputKeyword(e)}
-      />
+    <form
+      onSubmit={(e) => handleButtonSearch(e)}
+      className="d-flex align-self-center"
+    >
+      <div className="input-group me-3">
+        <input
+          type="text"
+          className="form-control"
+          onChange={(e) => handleInputKeyword(e)}
+        />
+      </div>
       <button className="btn btn-primary btn-sm" type={"submit"}>
         Search
       </button>
@@ -48,5 +53,5 @@ export default function SearchBar({ successSearch }) {
 }
 
 SearchBar.propTypes = {
-  successSearch: propTypes.array,
+  successSearch: propTypes.func,
 };
