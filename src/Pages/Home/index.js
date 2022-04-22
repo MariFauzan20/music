@@ -53,7 +53,7 @@ export default function Home() {
       const dataSelectedTracks = filterSelectedTracks();
       setTracks(dataSelectedTracks);
     }
-  }, [selectedTracks]);
+  }, []);
 
   return (
     <>
@@ -77,16 +77,18 @@ export default function Home() {
             </div>
           </div>
           <div className="row">
-            {tracks.map((track) => (
-              <Music
-                key={track.uri}
-                urlImg={track.album.images[0].url}
-                title={track.name}
-                artist={track.album.artists[0].name}
-                album={track.album.name}
-                clickHandleSelect={() => clickHandleSelect(track)}
-              />
-            ))}
+            {tracks.map((track) => {
+              return (
+                <Music
+                  key={track.uri}
+                  urlImg={track.album.images[0].url}
+                  title={track.name}
+                  artist={track.album.artists[0].name}
+                  album={track.album.name}
+                  clickHandleSelect={(track) => clickHandleSelect(track)}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
