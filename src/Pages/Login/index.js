@@ -3,7 +3,7 @@ import { getLinkAuthorize } from "../../handler/api";
 import { getUserProfile } from "../../handler/api";
 import { login } from "../../features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -59,12 +59,12 @@ export default function Login() {
         </div>
         <div className="col col-3 bg-dark">
           <div className="row align-items-center justify-content-center h-100">
-            <Link
+            <a
               className="btn btn-warning btn-sm w-50 "
-              to={getLinkAuthorize()}
+              href={getLinkAuthorize()}
             >
               Login to Spotify
-            </Link>
+            </a>
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import React from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import FormCreatePlaylist from "./Pages/FormCreatePlaylist";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import FormCreatePlaylist from "./pages/FormCreatePlaylist";
 
 function App() {
   return (
