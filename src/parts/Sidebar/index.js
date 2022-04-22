@@ -1,26 +1,29 @@
 import React, { useState } from "react";
-
 import logo from "../../assets/images/musical-note.svg";
 import homeIcon from "../../assets/images/bx_home.svg";
+import homeIconOrange from "../../assets/images/bx_home_orange.svg";
+import playlist from "../../assets/images/dashicons_playlist-audio.svg";
+import playlistOrange from "../../assets/images/dashicons_playlist-audio_orange.svg";
 import logoutIcon from "../../assets/images/carbon_logout.svg";
+import { Link, useLocation } from "react-router-dom";
 import "./index.css";
-import { Navigate } from "react-router-dom";
 
 export default function Sidebar() {
+  const location = useLocation();
+
   const logout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
-    setStatus(true);
   };
 
   return (
     <section
       id="sidebar"
-      className="d-flex flex-column flex-shrink-0 p-3 text-secondary v-100 border-end border-1"
+      className="d-flex flex-column flex-shrink-0 p-3 text-secondary vh-100 border-end border-1"
       style={{ width: "20%" }}
     >
-      <a
-        href="/"
+      <Link
+        to="/home"
         className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
       >
         <div className="me-2">
@@ -29,18 +32,60 @@ export default function Sidebar() {
         <span className="fs-5 fw-normal" style={{ color: "#FF6E4D" }}>
           Music App
         </span>
-      </a>
+      </Link>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-          <a
-            href="#"
-            className="d-flex align-items-center nav-link active"
+          <Link
+            to="/home"
+            className={`d-flex align-items-center nav-link ${
+              location.pathname == "/home" && "active"
+            }`}
             aria-current="page"
           >
-            <img src={homeIcon} alt="" style={{ width: 16 }} className="me-3" />
+            {location.pathname == "/home" ? (
+              <img
+                src={homeIconOrange}
+                alt=""
+                style={{ width: 16 }}
+                className="me-3"
+              />
+            ) : (
+              <img
+                src={homeIcon}
+                alt=""
+                style={{ width: 16 }}
+                className="me-3"
+              />
+            )}
             Home
-          </a>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            to="/create-playlist"
+            className={`d-flex align-items-center nav-link ${
+              location.pathname == "/create-playlist" && "active"
+            }`}
+            aria-current="page"
+          >
+            {location.pathname == "/create-playlist" ? (
+              <img
+                src={playlistOrange}
+                alt=""
+                style={{ width: 16 }}
+                className="me-3"
+              />
+            ) : (
+              <img
+                src={playlist}
+                alt=""
+                style={{ width: 16 }}
+                className="me-3"
+              />
+            )}
+            Create Playlist
+          </Link>
         </li>
         {/* <li>
           <a href="#" className="nav-link text-dark">
