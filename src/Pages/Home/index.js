@@ -65,7 +65,7 @@ export default function Home() {
             <div className="col d-flex justify-content-between">
               <div>
                 <h4 className="fw-bold" style={{ color: "#FF6E4D" }}>
-                  Spotify
+                  Home
                 </h4>
                 <p className="fs-6 text-secondary">
                   Discover a new music by typing in search

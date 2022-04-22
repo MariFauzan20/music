@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { addTracksToPlaylist, createPlaylist } from "../../handler/api";
 import { useSelector } from "react-redux";
 import propTypes from "prop-types";
+import Sidebar from "../../parts/Sidebar";
 
 export default function FormPlaylist({ selectedTracks }) {
   const accessToken = useSelector((state) => state.auth.accessToken);
@@ -42,32 +43,54 @@ export default function FormPlaylist({ selectedTracks }) {
 
   return (
     <>
-      <h1 className="fs-5 mb-3">Create Playlist</h1>
-      <form
-        className="d-flex flex-column justify-content-center align-items-start"
-        onSubmit={handleFormSubmit}
-      >
-        <input
-          className="mb-3"
-          type="text"
-          name="title"
-          id="title"
-          placeholder="Title"
-          onChange={handleInputChange}
-          value={form.title}
-        />
-        <textarea
-          name="description"
-          id="description"
-          cols="30"
-          rows="5"
-          className="mb-5"
-          placeholder="Description"
-          onChange={handleInputChange}
-          value={form.description}
-        />
-        <button className="btn btn-success">Create</button>
-      </form>
+      <div className="d-flex bg-bg-secondary">
+        <Sidebar />
+        <div className="container m-3">
+          <div className="row mb-4">
+            <div className="col d-flex">
+              <div>
+                <h4 className="fw-bold" style={{ color: "#FF6E4D" }}>
+                  Create Playlist
+                </h4>
+                <p className="fs-6 text-secondary">Add your new playlist</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col col-7">
+              <form
+                className="d-flex flex-column justify-content-center align-items-start"
+                onSubmit={handleFormSubmit}
+              >
+                <div className="input-group mb-3">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="title"
+                    id="title"
+                    placeholder="Title"
+                    onChange={handleInputChange}
+                    value={form.title}
+                  />
+                </div>
+                <div className="input-group mb-3">
+                  <textarea
+                    name="description"
+                    id="description"
+                    cols="30"
+                    rows="5"
+                    className="form-control"
+                    placeholder="Description"
+                    onChange={handleInputChange}
+                    value={form.description}
+                  />
+                </div>
+                <button className="btn btn-success">Create</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

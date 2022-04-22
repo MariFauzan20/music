@@ -129,9 +129,7 @@ export default function Sidebar() {
           height="24"
           className="rounded-circle me-2"
         />
-        <p className="m-0" move>
-          Logout
-        </p>
+        <p className="m-0">Logout</p>
       </a>
     </section>
   );
