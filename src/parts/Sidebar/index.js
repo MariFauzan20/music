@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import logo from "../../assets/images/musical-note.svg";
 import homeIcon from "../../assets/images/bx_home.svg";
 import homeIconOrange from "../../assets/images/bx_home_orange.svg";
@@ -39,11 +39,11 @@ export default function Sidebar() {
           <Link
             to="/home"
             className={`d-flex align-items-center nav-link ${
-              location.pathname == "/home" && "active"
+              location.pathname === "/home" && "active"
             }`}
             aria-current="page"
           >
-            {location.pathname == "/home" ? (
+            {location.pathname === "/home" ? (
               <img
                 src={homeIconOrange}
                 alt=""
@@ -65,11 +65,11 @@ export default function Sidebar() {
           <Link
             to="/create-playlist"
             className={`d-flex align-items-center nav-link ${
-              location.pathname == "/create-playlist" && "active"
+              location.pathname === "/create-playlist" && "active"
             }`}
             aria-current="page"
           >
-            {location.pathname == "/create-playlist" ? (
+            {location.pathname === "/create-playlist" ? (
               <img
                 src={playlistOrange}
                 alt=""
@@ -117,7 +117,7 @@ export default function Sidebar() {
         </li> */}
       </ul>
       <hr />
-      <a
+      <Link
         onClick={logout}
         className="d-flex align-items-center text-dark text-decoration-none mb-3 mt-3"
         style={{ cursor: "pointer" }}
@@ -130,7 +130,7 @@ export default function Sidebar() {
           className="rounded-circle me-2"
         />
         <p className="m-0">Logout</p>
-      </a>
+      </Link>
     </section>
   );
 }

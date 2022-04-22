@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Music from "../../components/Music";
 import SearchBar from "../../components/SearchBar";
@@ -13,12 +13,7 @@ export default function Home() {
   const selectedTracks = useSelector((state) => state.selectedTracks.tracks);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!isSearch) {
-      const dataSelectedTracks = filterSelectedTracks();
-      setTracks(dataSelectedTracks);
-    }
-  }, [selectedTracks]);
+  console.log(tracks);
 
   // Success Search
   const successSearch = (tracks) => {
@@ -32,9 +27,9 @@ export default function Home() {
   };
 
   // Filter Track based on Selected
-  const filterSelectedTracks = () => {
+  const filterSelectedTracks = useCallback(async () => {
     return tracks.filter((track) => selectedTracks.includes(track.uri));
-  };
+  }, [selectedTracks, tracks]);
 
   // Selected Music
   const clickHandleSelect = (track) => {
@@ -54,6 +49,13 @@ export default function Home() {
       );
     }
   };
+
+  useEffect(() => {
+    if (!isSearch) {
+      const dataSelectedTracks = filterSelectedTracks();
+      setTracks(dataSelectedTracks);
+    }
+  }, [selectedTracks, isSearch, filterSelectedTracks]);
 
   return (
     <>
