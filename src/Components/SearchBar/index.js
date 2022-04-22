@@ -7,10 +7,6 @@ export default function SearchBar({ successSearch }) {
   const [keyword, setKeyword] = useState("");
   const token = useSelector((state) => state.auth.accessToken);
 
-  const handleInputKeyword = (e) => {
-    setKeyword(e.target.value);
-  };
-
   const handleButtonSearch = async (e) => {
     e.preventDefault();
 
@@ -42,7 +38,7 @@ export default function SearchBar({ successSearch }) {
         <input
           type="text"
           className="form-control"
-          onChange={(e) => handleInputKeyword(e)}
+          onChange={(e) => setKeyword(e.target.value)}
         />
       </div>
       <button className="btn btn-primary btn-sm" type={"submit"}>

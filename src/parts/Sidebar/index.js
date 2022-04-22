@@ -87,37 +87,9 @@ export default function Sidebar() {
             Create Playlist
           </Link>
         </li>
-        {/* <li>
-          <a href="#" className="nav-link text-dark">
-            <svg className="bi me-2" width="16" height="16">
-            </svg>
-            Dashboard
-          </a>
-        </li>
-        <li>
-          <a href="#" className="nav-link text-dark">
-            <svg className="bi me-2" width="16" height="16">
-            </svg>
-            Orders
-          </a>
-        </li>
-        <li>
-          <a href="#" className="nav-link text-dark">
-            <svg className="bi me-2" width="16" height="16">
-            </svg>
-            Products
-          </a>
-        </li>
-        <li>
-          <a href="#" className="nav-link text-dark">
-            <svg className="bi me-2" width="16" height="16">
-            </svg>
-            Customers
-          </a>
-        </li> */}
       </ul>
       <hr />
-      <Link
+      <div
         onClick={logout}
         className="d-flex align-items-center text-dark text-decoration-none mb-3 mt-3"
         style={{ cursor: "pointer" }}
@@ -130,7 +102,7 @@ export default function Sidebar() {
           className="rounded-circle me-2"
         />
         <p className="m-0">Logout</p>
-      </Link>
+      </div>
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Music from "../../components/Music";
 import SearchBar from "../../components/SearchBar";
@@ -13,8 +13,6 @@ export default function Home() {
   const selectedTracks = useSelector((state) => state.selectedTracks.tracks);
   const dispatch = useDispatch();
 
-  console.log(tracks);
-
   // Success Search
   const successSearch = (tracks) => {
     setIsSearch(true);
@@ -27,9 +25,9 @@ export default function Home() {
   };
 
   // Filter Track based on Selected
-  const filterSelectedTracks = useCallback(async () => {
+  const filterSelectedTracks = () => {
     return tracks.filter((track) => selectedTracks.includes(track.uri));
-  }, [selectedTracks, tracks]);
+  };
 
   // Selected Music
   const clickHandleSelect = (track) => {
@@ -55,7 +53,7 @@ export default function Home() {
       const dataSelectedTracks = filterSelectedTracks();
       setTracks(dataSelectedTracks);
     }
-  }, [selectedTracks, isSearch, filterSelectedTracks]);
+  }, [selectedTracks]);
 
   return (
     <>
@@ -74,11 +72,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="d-flex align-items-start">
-                {isAuthorize && (
-                  <SearchBar
-                    successSearch={(tracks) => successSearch(tracks)}
-                  />
-                )}
+                <SearchBar successSearch={(tracks) => successSearch(tracks)} />
               </div>
             </div>
           </div>
