@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { addTracksToPlaylist, createPlaylist } from "../../handler/api";
 import { useSelector } from "react-redux";
-import propTypes from "prop-types";
+import { addTracksToPlaylist, createPlaylist } from "../../handler/api";
 import Sidebar from "../../parts/Sidebar";
 
-export default function FormPlaylist({ selectedTracks }) {
+export default function FormCreatePlaylist() {
+  const selectedTracks = useSelector((state) => state.selectedTracks.tracks);
   const accessToken = useSelector((state) => state.auth.accessToken);
   const userId = useSelector((state) => state.auth.user.id);
   const [form, setForm] = useState({
@@ -94,7 +94,3 @@ export default function FormPlaylist({ selectedTracks }) {
     </>
   );
 }
-
-FormPlaylist.propTypes = {
-  selectedTracks: propTypes.array,
-};
