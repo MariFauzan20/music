@@ -53,7 +53,7 @@ export default function Home() {
       const dataSelectedTracks = filterSelectedTracks();
       setTracks(dataSelectedTracks);
     }
-  }, []);
+  }, [isSearch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
