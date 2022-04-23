@@ -1,6 +1,6 @@
 # Spotify React
 
-Aplikasi berbasis website yang menampilkan daftar lagu, mencari lagu favorit, kemudian dapat membuat playlist.
+[Spotify React](https://music-spotify.vercel.app/) merupakan aplikasi berbasis website yang menampilkan daftar lagu, mencari lagu favorit, kemudian dapat membuat playlist.
 
 ## Features
 
