@@ -1,5 +1,8 @@
 # Spotify App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Project ini dapat dilihat pada link berikut ini [Spotify React](https://mar-imusic.netlify.app/).
 
 ## Features
+
+- Create Playlist
+- Search Track
