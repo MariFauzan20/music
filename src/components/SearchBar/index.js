@@ -7,10 +7,6 @@ export default function SearchBar({ successSearch }) {
   const [keyword, setKeyword] = useState("");
   const token = useSelector((state) => state.auth.accessToken);
 
-  const handleInputKeyword = (e) => {
-    setKeyword(e.target.value);
-  };
-
   const handleButtonSearch = async (e) => {
     e.preventDefault();
 
@@ -34,12 +30,17 @@ export default function SearchBar({ successSearch }) {
   };
 
   return (
-    <form onSubmit={(e) => handleButtonSearch(e)}>
-      <input
-        className="me-2"
-        type="text"
-        onChange={(e) => handleInputKeyword(e)}
-      />
+    <form
+      onSubmit={(e) => handleButtonSearch(e)}
+      className="d-flex align-self-center"
+    >
+      <div className="input-group me-3">
+        <input
+          type="text"
+          className="form-control"
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+      </div>
       <button className="btn btn-primary btn-sm" type={"submit"}>
         Search
       </button>
@@ -48,5 +49,5 @@ export default function SearchBar({ successSearch }) {
 }
 
 SearchBar.propTypes = {
-  successSearch: propTypes.array,
+  successSearch: propTypes.func,
 };
