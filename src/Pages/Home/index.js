@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Music from "../../components/Music";
 import SearchBar from "../../components/SearchBar";
@@ -25,9 +25,9 @@ export default function Home() {
   };
 
   // Filter Track based on Selected
-  const filterSelectedTracks = () => {
+  const filterSelectedTracks = useCallback(() => {
     return tracks.filter((track) => selectedTracks.includes(track.uri));
-  };
+  }, [selectedTracks, tracks]);
 
   // Selected Music
   const clickHandleSelect = (track) => {
@@ -53,7 +53,7 @@ export default function Home() {
       const dataSelectedTracks = filterSelectedTracks();
       setTracks(dataSelectedTracks);
     }
-  }, [isSearch]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isSearch, filterSelectedTracks]);
 
   return (
     <>
